@@ -76,7 +76,12 @@ const RegisterHook = () => {
       </div>
       <div className="flex flex-col gap-3 mb-5">
         <label className="cursor-pointer">Gender</label>
-        <DropdownHook control={control} setValue={setValue} name="job" />
+        <DropdownHook
+          control={control}
+          setValue={setValue}
+          name="job"
+          dropdownLabel="Chon job"
+        />
       </div>
       <div className="flex flex-col gap-3">
         <CheckboxHook
