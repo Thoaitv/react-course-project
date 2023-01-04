@@ -1,27 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import useClickOutSide from '../../hook/useClickOutSide';
-
-const DropdownHook = ({ control, setValue, name, data, dropdownLabel }) => {
+const DropdownHook = ({
+  control,
+  setValue,
+  name,
+  data,
+  dropdownLabel = 'Select your job',
+}) => {
   const { show, setShow, nodeRef } = useClickOutSide();
-  useWatch({
+  const dropdownValue = useWatch({
     control,
     name: 'job',
     defaultValue: '', // default value before the render
   });
-
-  const dataDropdown = [
-    { id: 1, value: 'SE', text: 'SoftWare' },
-    { id: 2, value: 'JS', text: 'Japan' },
-    { id: 3, value: 'HS', text: 'Bussiness' },
-  ];
-  const handleClickDropdown = (e) => {
+  console.log('dropdownValue', dropdownValue);
+  const handleClickDropdownItem = (e) => {
     setValue(name, e.target.dataset.value);
     setShow(false);
     setLabel(e.target.textContent);
   };
   const [label, setLabel] = useState(dropdownLabel);
-
+  useEffect(() => {
+    if (dropdownValue === '') setLabel(dropdownLabel);
+  }, [dropdownValue]);
   return (
     <div className="relative" ref={nodeRef}>
       <div
@@ -33,30 +35,10 @@ const DropdownHook = ({ control, setValue, name, data, dropdownLabel }) => {
         className={`absolute top-full left-0 w-full rounded-lg bg-white ${
           show ? '' : 'opacity-0 invisible'
         }`}>
-        {/* <div className="p-5 cursor-pointer hover:bg-gray-100">
+        {data.map((item) => (
           <div
-            className="p-5 cursor-pointer hover:bg-gray-200"
-            onClick={handleClickDropdown}
-            data-value="thoai">
-            thoai
-          </div>
-          <div
-            className="p-5 cursor-pointer hover:bg-gray-200"
-            onClick={handleClickDropdown}
-            data-value="thoai1">
-            thoai1
-          </div>
-          <div
-            className="p-5 cursor-pointer hover:bg-gray-200"
-            onClick={handleClickDropdown}
-            data-value="thoai2">
-            thoai2
-          </div>
-        </div> */}
-        {dataDropdown.map((item, index) => (
-          <div
-            className="p-5 cursor-pointer hover:bg-gray-200"
-            onClick={handleClickDropdown}
+            className="p-5 cursor-pointer hover:bg-gray-100"
+            onClick={handleClickDropdownItem}
             data-value={item.value}
             key={item.id}>
             {item.text}
